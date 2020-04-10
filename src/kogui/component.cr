@@ -7,25 +7,17 @@ module Kogui
     def render
     end
 
-    {% for name, index in HTML_TAGS %}
+    {% for name, index in HTML_TAGS %}      
       # a virtual-DOM node representing an {{name.id}} element
-      def {{name.id}}(attributes : JSON::Any? = nil, content : (Array(Component) | Array(Tag) | String)? = nil) : Tag
-        tag "{{name.id}}", attributes, content
-      end    
+      def {{name.id}}(**attributes)
+        Tag.new "{{name.id}}", attributes, yield
+      end
 
       # a virtual-DOM node representing an {{name.id}} element
-      def {{name.id}}(content : (Array(Component) | Array(Tag) | String)) : Tag 
-        tag "{{name.id}}", content: content
+      def {{name.id}}
+        Tag.new "{{name.id}}", nil, nil
       end
     {% end %}
-
-    def tag(tag_name : String, attributes : JSON::Any? = nil, content : (Array(Component) | Array(Tag) | String)? = nil) : Tag
-      Tag.new(tag_name, attributes, content)
-    end
-
-    def attr(attributes : Hash) : JSON::Any
-      JSON.parse attributes.to_json
-    end
 
     def to_s : String
       render.to_s

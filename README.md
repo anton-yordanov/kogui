@@ -25,33 +25,25 @@ class App
   include Kogui::Component
 
   def render
-    html(
+    html lang: "en" do
       [
-        head(
-          [
-            title("Title"),
-          ]
-        ),
+        head do
+          title { "Title" }
+        end,
 
-        body(
-          attr({
-            :style => "width: 100vw",
-          }),
+        body style: "width: 100vw" do
           [
-            h1(
-              attr({
-                :id    => "__title",
-                :class => "bold-text",
-                :style => {
-                  "font-size": "23px",
-                },
-              }),
-              "Hello world!"
-            ),
+            h1 id: "__title", class: "bold__text" do
+              h1 style: {"font-size": "2rem"} do
+                Array.new(5) do
+                  h1 { Time.utc.to_s }
+                end
+              end
+            end,
           ]
-        ),
+        end,
       ]
-    )
+    end
   end
 end
 
@@ -61,21 +53,31 @@ html = app.to_s # <html><head><titl...
 
 Result (prettified):
 ```html
-<html>
-  <head>
+<html lang="en">
+
+<head>
     <title>Title</title>
-  </head>
-  <body>
-    <h1 class="bold-text" style="font-size:23px" id="__title" >Hello world!</h1>
-  </body>
+</head>
+
+<body style="width: 100vw">
+    <h1 id="__title" class="bold__text">
+        <h1 style="font-size:2rem">
+            <h1>2020-04-10 18:18:21 UTC</h1>
+            <h1>2020-04-10 18:18:21 UTC</h1>
+            <h1>2020-04-10 18:18:21 UTC</h1>
+            <h1>2020-04-10 18:18:21 UTC</h1>
+            <h1>2020-04-10 18:18:21 UTC</h1>
+        </h1>
+    </h1>
+</body>
+
 </html>
 ```
 
-TODO: Write usage instructions here
-
 ## Development
 
-TODO: Write development instructions here
+TODO:
+- Router system
 
 ## Contributing
 

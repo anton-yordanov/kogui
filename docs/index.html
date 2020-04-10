@@ -40,6 +40,11 @@
   <div class="types-list">
     <ul>
   
+  <li class=" " data-id="github.com/krthr/kogui/App" data-name="app">
+      <a href="App.html">App</a>
+      
+    </li>
+  
   <li class="parent " data-id="github.com/krthr/kogui/Kogui" data-name="kogui">
       <a href="Kogui.html">Kogui</a>
       
@@ -102,33 +107,25 @@ class App
   include Kogui::Component
 
   def render
-    html(
+    html lang: "en" do
       [
-        head(
-          [
-            title("Title"),
-          ]
-        ),
+        head do
+          title { "Title" }
+        end,
 
-        body(
-          attr({
-            :style => "width: 100vw",
-          }),
+        body style: "width: 100vw" do
           [
-            h1(
-              attr({
-                :id    => "__title",
-                :class => "bold-text",
-                :style => {
-                  "font-size": "23px",
-                },
-              }),
-              "Hello world!"
-            ),
+            h1 id: "__title", class: "bold__text" do
+              h1 style: {"font-size": "2rem"} do
+                Array.new(5) do
+                  h1 { Time.utc.to_s }
+                end
+              end
+            end,
           ]
-        ),
+        end,
       ]
-    )
+    end
   end
 end
 
@@ -137,16 +134,25 @@ html = app.to_s # &lt;html>&lt;head>&lt;titl...</code></pre>
 
 <p>Result (prettified):</p>
 
-<pre><code class="language-html">&lt;html>
-  &lt;head>
-    &lt;title>Title&lt;/title>
-  &lt;/head>
-  &lt;body>
-    &lt;h1 class="bold-text" style="font-size:23px" id="__title" >Hello world!&lt;/h1>
-  &lt;/body>
-&lt;/html></code></pre>
+<pre><code class="language-html">&lt;html lang="en">
 
-<p><span class="flag orange">TODO</span>  Write usage instructions here</p>
+&lt;head>
+    &lt;title>Title&lt;/title>
+&lt;/head>
+
+&lt;body style="width: 100vw">
+    &lt;h1 id="__title" class="bold__text">
+        &lt;h1 style="font-size:2rem">
+            &lt;h1>2020-04-10 18:18:21 UTC&lt;/h1>
+            &lt;h1>2020-04-10 18:18:21 UTC&lt;/h1>
+            &lt;h1>2020-04-10 18:18:21 UTC&lt;/h1>
+            &lt;h1>2020-04-10 18:18:21 UTC&lt;/h1>
+            &lt;h1>2020-04-10 18:18:21 UTC&lt;/h1>
+        &lt;/h1>
+    &lt;/h1>
+&lt;/body>
+
+&lt;/html></code></pre>
 
 <h2><a id="development" class="anchor" href="#development">
   <svg class="octicon-link" aria-hidden="true">
@@ -154,7 +160,9 @@ html = app.to_s # &lt;html>&lt;head>&lt;titl...</code></pre>
   </svg>
 </a>Development</h2>
 
-<p><span class="flag orange">TODO</span>  Write development instructions here</p>
+<p><span class="flag orange">TODO</span> </p>
+
+<ul><li>Router system</li></ul>
 
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">

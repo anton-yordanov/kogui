@@ -1,45 +1,49 @@
 require "json"
 
 module Kogui
-
   # :nodoc:
   class Tag
-    @attributes : Hash(String, String)?
+    @attributes : Hash(String | Symbol, String)?
 
-    def initialize(tag_name : String, attributes : JSON::Any?, content : (Array(Component) | Array(Tag) | String)?)
+    def initialize(tag_name : String, attributes, content : (Array(Tag) | Tag | String)?)
       @tag_name = tag_name
       @attributes = sanitize_attributes(attributes)
       @content = content
     end
 
-    def sanitize_attributes(attributes : JSON::Any?) : Hash(String, String)?
+    def sanitize_attributes(attributes) : Hash(String | Symbol, String)?
       return nil if attributes.nil?
 
-      attributes_hash = attributes.as_h?
-      final_attributes = {} of String => String
+      final_attributes = {} of (Symbol | String) => String
 
-      if attributes_hash.is_a? Hash
-        if attributes_hash["class_name"]? || attributes_hash["className"]?
-          class_name = attributes_hash.delete("class_name") || attributes_hash.delete("className")
+      class_name = attributes[:class_name]? || attributes[:className]?
+      final_attributes[:class] = attributes.fetch(:class, class_name).to_s if class_name
 
-          final_attributes["class"] = attributes_hash["class"]? ? attributes_hash["class"].to_s : class_name.to_s
-        end
+      style = attributes[:style]?
 
-        if attributes_hash["style"]?
-          style_hash = attributes_hash["style"].as_h?
-
-          final_attributes["style"] = style_hash
-            .map { |(a, v)| "#{a.tr "_", "-"}:#{v}" }
-            .join ";" if style_hash.is_a? Hash
-        end
-
-        attributes_hash
-          .reject { |key, handler|
-            key[0, 2] == "on" ||
-              ["style", "class_name", "className"].any?(key)
-          }
-          .each { |(a, v)| final_attributes[a] = v.to_s }
+      if !style.nil?
+        final_attributes["style"] = if style.is_a? NamedTuple
+                                      style
+                                        .map { |a, v|
+                                          "#{a.to_s.tr "_", "-"}:#{v}"
+                                        }
+                                        .join(";")
+                                    else
+                                      style.to_s
+                                    end
       end
+
+      attributes
+        .each { |key, value|
+          key = key.to_s
+
+          if key[0, 2] != "on" &&
+             key != "style" &&
+             key != "class_name" &&
+             key != "className"
+            final_attributes[key] = value.to_s
+          end
+        }
 
       final_attributes
     end
