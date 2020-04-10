@@ -1,8 +1,8 @@
 # Kogui
 
-TODO: Write a description here
+Generate HTML using Crystal.
 
-> Heavely inspired in [Clearwater.cr](https://github.com/clearwater-rb/clearwater)
+> Heavily inspired in [Clearwater.cr](https://github.com/clearwater-rb/clearwater) Component system.
 
 ## Installation
 
